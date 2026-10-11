@@ -36,7 +36,7 @@ rendered as action cards. It is a working prototype, not a hardened product.
 ## Architecture
 
 ShelfIQ is a **thin client around an already-built, already-tested Dify chatflow**
-(`ShelfIQ_V2.yml`). This repo does *not* reimplement the 4-way classifier, the Newsvendor /
+(`ShelfIQ_Dify_11012026.yml`). This repo does *not* reimplement the 4-way classifier, the Newsvendor /
 markdown math, or the narrator — all of that runs inside Dify.
 
 ```
