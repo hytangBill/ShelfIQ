@@ -215,7 +215,6 @@ Honest list of what isn't done:
   10-case regression suite — including the critical one that scans the narrator's `explanation` for
   any number not present in `products` (the "narrator silently changed a number" bug). None of it
   is ported. This is the single biggest risk in the project.
-- **Not on GitHub.** 9 commits, no remote. Nothing is backed up off this machine.
 - **Not deployed.** The config is ready; the deploy hasn't happened.
 - **The engine isn't in this repo**, so its guarantees aren't independently verifiable here.
 - **Exact-match only on SKU lookup** — no typo tolerance, no fuzzy string matching. A deliberate
