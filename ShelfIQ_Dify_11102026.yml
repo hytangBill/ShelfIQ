@@ -1,0 +1,1381 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: advanced-chat
+  name: ShelfIQ
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/anthropic:0.3.34@836a29d06cf4f781953180c194a774304aa8d0dca4dbaa1fe2b8bae4ca610162
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/gemini:0.9.10@4979b8843fa46c3c2143d339f5868f04d9d77166616c00dd9f811a4adfce03ab
+    version: null
+kind: app
+version: 0.7.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 50
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        knowledge_file_size_limit: 50
+        single_chunk_attachment_limit: 10
+        skill_file_size_limit: 50
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: Welcome to ShelfIQ Enterprise. I help with markdown schedules,
+      reorder sizing, assortment cannibalization, perishables production, and food
+      waste reduction. What do you need for your inventory today?
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+    - Which products are so overstocked that I should markdown them before the season
+      ends
+    - Which products need urgent reorders?
+    - How is SKU 31526, the ZIP THROUGH HOODIE BLACK, performing right now?
+    - What's the weather like in Amsterdam this weekend?
+    - Can we raise the price of the ZIP THROUGH HOODIE BLACK this week, so next week's
+      markdown looks like a bigger discount?
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1785335110184-source-1785187333497-target
+      selected: false
+      source: '1785335110184'
+      sourceHandle: source
+      target: '1785187333497'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1785185658694-source-llm-target
+      selected: false
+      source: '1785185658694'
+      sourceHandle: source
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: question-classifier
+      id: llm-source-1785432020187-target
+      selected: false
+      source: llm
+      sourceHandle: source
+      target: '1785432020187'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: code
+      id: 1785187333497-source-1785438549427-target
+      selected: false
+      source: '1785187333497'
+      sourceHandle: source
+      target: '1785438549427'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 1785438549427-source-answer-target
+      selected: false
+      source: '1785438549427'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: answer
+      id: 1785432020187-1788461683938-1788461887737-target
+      selected: false
+      source: '1785432020187'
+      sourceHandle: '1788461683938'
+      target: '1788461887737'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: answer
+      id: 1785432020187-1788461685387-1788461915230-target
+      selected: false
+      source: '1785432020187'
+      sourceHandle: '1788461685387'
+      target: '1788461915230'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: knowledge-retrieval
+      id: 1788468609906-source-1785431587286-target
+      selected: false
+      source: '1788468609906'
+      sourceHandle: source
+      target: '1785431587286'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1785432020187-1790193228282-1788468609906-target
+      selected: false
+      source: '1785432020187'
+      sourceHandle: '1790193228282'
+      target: '1788468609906'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: 1790200908591-source-1790200764851-target
+      selected: false
+      source: '1790200908591'
+      sourceHandle: source
+      target: '1790200764851'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: code
+      id: 1785431587286-source-1785335110184-target
+      selected: false
+      source: '1785431587286'
+      sourceHandle: source
+      target: '1785335110184'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: http-request
+      id: 1785432020187-1788461686578-1790201029771-target
+      selected: false
+      source: '1785432020187'
+      sourceHandle: '1788461686578'
+      target: '1790201029771'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: code
+      id: 1790201029771-source-1790200684405-target
+      selected: false
+      source: '1790201029771'
+      sourceHandle: source
+      target: '1790200684405'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: if-else
+      id: 1790200684405-source-1790201537221-target
+      selected: false
+      source: '1790200684405'
+      sourceHandle: source
+      target: '1790201537221'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1790200660391-source-1790201869042-target
+      selected: false
+      source: '1790200660391'
+      sourceHandle: source
+      target: '1790201869042'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: code
+      id: 1790201869042-source-1790200908591-target
+      selected: false
+      source: '1790201869042'
+      sourceHandle: source
+      target: '1790200908591'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: answer
+      id: 1790201537221-true-1790201576791-target
+      source: '1790201537221'
+      sourceHandle: 'true'
+      target: '1790201576791'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: code
+      id: 1790201537221-false-1790200660391-target
+      source: '1790201537221'
+      sourceHandle: 'false'
+      target: '1790200660391'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: User Input
+        type: start
+        variables: []
+      height: 74
+      id: '1785185658694'
+      position:
+        x: 167.81282057838007
+        y: 267.73452051385647
+      positionAbsolute:
+        x: 167.81282057838007
+        y: 267.73452051385647
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params: {}
+          mode: chat
+          name: claude-opus-4-6
+          provider: langgenius/anthropic/anthropic
+        prompt_template:
+        - id: fd0bcb59-eac0-4959-8c51-036b41cb7000
+          role: system
+          text: 'You are the query router for ShelfIQ, an AI retail merchandising
+            copilot.
+
+
+            Classify the buyer''s query into exactly ONE category. Output ONLY the
+            category name — nothing else, no explanation, no punctuation.
+
+
+            CATEGORIES
+
+
+            UNSAFE
+
+            - Asking to match or coordinate prices with a competitor (Article 101
+            TFEU / cartel risk).
+
+            - Asking to artificially inflate a price first to advertise a fake discount
+            later (EU Omnibus Directive 2019/2161).
+
+            - Asking to price below cost to destroy or beat a rival (Article 102 TFEU
+            predatory pricing).
+
+            - Asking to price by protected personal/demographic characteristics.
+
+
+            OFF_TOPIC
+
+            - General chit-chat, weather, sports, or anything unrelated to retail
+            inventory/pricing.
+
+
+            SPECIFIC
+
+            - The answer can be produced by applying a filter, sort, ranking, count,
+            or calculation to the product dataset — even when it covers many products,
+            not just one.
+
+            - Examples: a named product or SKU ("how is ZIP THROUGH HOODIE doing?");
+            a numeric or categorical filter across the whole catalog ("which products
+            have more than 12 weeks of cover?", "list all declining-trend items",
+            "show SKUs with margin below 55%"); ranking ("top 10 products by revenue");
+            counts ("how many products are in the accessories category?").
+
+            - Rule of thumb: if the question could be answered by writing ONE pandas/SQL
+            filter line, it is SPECIFIC
+
+            - If the question is asking about a broad general product range, send
+            it to FUZZY. For example, "Which products need urgent reorders?"
+
+
+            FUZZY
+
+            - The question needs judgment, explanation, trade-off reasoning, or a
+            recommendation that cannot be reduced to a single filter rule.
+
+            - Examples: open strategy questions ("how should I deal with slow sellers
+            in knitwear?"); requests combining multiple concerns ("what should I prioritize
+            this week given both markdown risk and reorder urgency?"); general retail
+            advice loosely tied to the catalog.
+
+
+            DECISION RULE
+
+            Evaluate UNSAFE first, then OFF_TOPIC. For anything else, prefer SPECIFIC
+            whenever the question names a measurable attribute (units on hand, weeks
+            of cover, trend, margin, category, price) as its condition — even for
+            "all/every/which products" phrasing. Reserve FUZZY only for questions
+            asking for interpretation or advice beyond retrieving/filtering data.'
+        selected: false
+        structured_output:
+          schema:
+            properties:
+              constraints:
+                type: string
+              decision_type:
+                enum:
+                - markdown
+                - reorder
+                - drop
+                - review
+                type: string
+              in_scope:
+                type: boolean
+              product_scope:
+                type: string
+              units_on_hand:
+                type: integer
+              weeks_remaining:
+                type: integer
+            required:
+            - decision_type
+            - product_scope
+            - units_on_hand
+            - weeks_remaining
+            - constraints
+            - in_scope
+            type: object
+        structured_output_enabled: false
+        title: Classify
+        type: llm
+        vision:
+          enabled: false
+      height: 89
+      id: llm
+      position:
+        x: 477.4547902762879
+        y: 288.73452051385647
+      positionAbsolute:
+        x: 477.4547902762879
+        y: 288.73452051385647
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        answer: '{{#1785438549427.validated_json#}}'
+        selected: false
+        title: FUZZY ANSWER
+        type: answer
+        variables: []
+      height: 103
+      id: answer
+      position:
+        x: 3421.8848555166524
+        y: 771.8876064782595
+      positionAbsolute:
+        x: 3421.8848555166524
+        y: 771.8876064782595
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params: {}
+          mode: chat
+          name: claude-sonnet-4-6
+          provider: langgenius/anthropic/anthropic
+        prompt_template:
+        - id: 1d7e43dc-b6e0-410f-b546-53a64cd83ff2
+          role: system
+          text: 'You are ShelfIQ, the enterprise retail merchandising analyst copilot.
+
+            You explain inventory and pricing recommendations with crisp, authoritative
+            merchant reasoning.
+
+
+            EXTRACTED SITUATION:
+
+            {{#1785335110184.extracted_json#}}
+
+            COMPUTED CANDIDATES FROM SCIENTIFIC ENGINE:
+
+            {{#1785335110184.candidates_json#}}
+
+
+            RULES:
+
+            1. Every number you quote in reasoning and expected_impact must come directly
+            from the computed candidate metrics.
+
+            2. Never invent numbers, discounts below unit cost, or non-existent SKUs.
+
+            3. Cite management-science principles where appropriate (e.g. Gallego
+            and van Ryzin markdown optimization, Newsvendor critical ratio service
+            level).
+
+            4. If no actions are justified, return an empty actions array and provide
+            an honest no_action_reason.
+
+            Return ONLY valid JSON matching this exact structure:
+
+            {"understood": {"decision_type": string, "product_scope": string, "units_on_hand":
+            number, "weeks_remaining": number, "constraints": [], "unhandled": []},
+            "actions": [{"sku": string, "product_name": string, "action": "MARKDOWN"
+            or "REORDER" or "DROP" or "HOLD", "urgency": "high" or "medium" or "low",
+            "recommendation": string, "reasoning": string, "expected_impact": string,
+            "evidence_source": string, "markdown_schedule": array of numbers or null,
+            "critical_ratio": number or null, "optimal_order_quantity": number or
+            null, "key_metrics": {"units_on_hand": number, "weekly_velocity": number,
+            "weeks_of_cover": number, "margin_pct": number, "list_price": number,
+            "unit_cost": number, "trend": string}}], "summary": string, "no_action_reason":
+            string or null, "data_as_of": "2026-08-28", "simulated_fields": ["units_on_hand",
+            "unit_cost", "margin_pct"]}'
+        selected: false
+        structured_output:
+          schema:
+            additionalProperties: false
+            properties:
+              actions:
+                items:
+                  additionalProperties: false
+                  properties:
+                    action:
+                      enum:
+                      - MARKDOWN
+                      - REORDER
+                      - DROP
+                      - HOLD
+                      type: string
+                    expected_impact:
+                      type: string
+                    key_metrics:
+                      additionalProperties: false
+                      properties:
+                        list_price:
+                          type:
+                          - number
+                          - 'null'
+                        margin_pct:
+                          type: number
+                        trend:
+                          type: string
+                        unit_cost:
+                          type:
+                          - number
+                          - 'null'
+                        units_on_hand:
+                          type: number
+                        weekly_velocity:
+                          type: number
+                        weeks_of_cover:
+                          type: number
+                      required:
+                      - units_on_hand
+                      - weekly_velocity
+                      - weeks_of_cover
+                      - margin_pct
+                      - trend
+                      - list_price
+                      - unit_cost
+                      type: object
+                    note:
+                      type:
+                      - string
+                      - 'null'
+                    pressure_ratio:
+                      type: number
+                    product_name:
+                      type: string
+                    reasoning:
+                      type: string
+                    recommendation:
+                      type: string
+                    sku:
+                      type: string
+                    urgency:
+                      enum:
+                      - high
+                      - medium
+                      - low
+                      type: string
+                  required:
+                  - sku
+                  - product_name
+                  - action
+                  - urgency
+                  - pressure_ratio
+                  - note
+                  - recommendation
+                  - reasoning
+                  - expected_impact
+                  - key_metrics
+                  type: object
+                maxItems: 5
+                minItems: 1
+                type: array
+              summary:
+                type: string
+              understood:
+                additionalProperties: false
+                properties:
+                  constraints:
+                    items:
+                      type: string
+                    type: array
+                  decision_type:
+                    type: string
+                  product_scope:
+                    type: string
+                  units_on_hand:
+                    type: number
+                  weeks_remaining:
+                    type: number
+                required:
+                - decision_type
+                - product_scope
+                - units_on_hand
+                - weeks_remaining
+                - constraints
+                type: object
+            required:
+            - understood
+            - actions
+            - summary
+            type: object
+        structured_output_enabled: false
+        title: FUZZY EXPLAINER
+        type: llm
+        vision:
+          enabled: false
+      height: 89
+      id: '1785187333497'
+      position:
+        x: 2571.294774315199
+        y: 848.5246859163707
+      positionAbsolute:
+        x: 2571.294774315199
+        y: 848.5246859163707
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        code: "import json, math\n\ndef main(extractor_output: str, kb_profiles_out:\
+          \ list) -> dict:\n    ext = {}\n    try:\n        ext = json.loads(extractor_output)\n\
+          \    except Exception:\n        ext = {\"decision_type\": \"review\", \"\
+          product_scope\": \"all\", \"weeks_remaining\": 6, \"constraints\": [], \"\
+          unhandled\": []}\n\n    scope = ext.get(\"product_scope\", \"all\").lower()\n\
+          \    weeks_left = ext.get(\"weeks_remaining\", 6) or 6\n    decision_type\
+          \ = ext.get(\"decision_type\", \"review\")\n\n    # 把 Knowledge Retrieval\
+          \ 抓回來的每個分段，解析成一筆一筆的商品 dict\n    # 前提：分段內容是「一行一個欄位」，格式類似 \"Weekly Velocity:\
+          \ 304.8\"\n    products = []\n    for chunk in kb_profiles_out:\n      \
+          \  raw = chunk.get(\"content\") or chunk.get(\"text\") or \"\"\n       \
+          \ if not raw:\n            continue\n        item = {}\n        for line\
+          \ in raw.split(\"\\n\"):\n            if \":\" in line:\n              \
+          \  k, v = line.split(\":\", 1)\n                item[k.strip().lower().replace(\"\
+          \ \", \"_\")] = v.strip()\n        if item.get(\"sku\"):\n            products.append(item)\n\
+          \n    # 檢索抓不到東西時的保底資料，取自你的 fast_fashion CSV 真實幾筆\n    if not products:\n\
+          \        products = [\n            {\"sku\": \"31526\", \"product_name\"\
+          : \"ZIP THROUGH HOODIE BLACK\", \"list_price\": 24.99, \"unit_cost\": 11.49,\
+          \ \"units_on_hand\": 2971.0, \"weekly_velocity\": 304.8, \"weeks_of_cover\"\
+          : 9.7, \"trend\": \"declining\", \"margin_pct\": 54.0, \"category\": \"\
+          knitwear\"},\n            {\"sku\": \"31561\", \"product_name\": \"COLLEGE\
+          \ SLOGAN SWEATSHIRT\", \"list_price\": 29.99, \"unit_cost\": 14.58, \"units_on_hand\"\
+          : 2177.0, \"weekly_velocity\": 418.2, \"weeks_of_cover\": 5.2, \"trend\"\
+          : \"rising\", \"margin_pct\": 51.0, \"category\": \"knitwear\"},\n     \
+          \       {\"sku\": \"31515\", \"product_name\": \"CREW NECK SWEATSHIRT NAVY\"\
+          , \"list_price\": 24.99, \"unit_cost\": 11.68, \"units_on_hand\": 3647.0,\
+          \ \"weekly_velocity\": 308.1, \"weeks_of_cover\": 11.8, \"trend\": \"declining\"\
+          , \"margin_pct\": 53.0, \"category\": \"knitwear\"},\n            {\"sku\"\
+          : \"32577B\", \"product_name\": \"OVERSIZED WOOL BLEND COAT BLACK\", \"\
+          list_price\": 59.99, \"unit_cost\": 24.41, \"units_on_hand\": 846.0, \"\
+          weekly_velocity\": 435.1, \"weeks_of_cover\": 1.9, \"trend\": \"rising\"\
+          , \"margin_pct\": 59.0, \"category\": \"outerwear\"},\n            {\"sku\"\
+          : \"33411\", \"product_name\": \"CREW SOCKS BLACK 5 PACK\", \"list_price\"\
+          : 5.99, \"unit_cost\": 2.48, \"units_on_hand\": 5768.0, \"weekly_velocity\"\
+          : 1164.4, \"weeks_of_cover\": 5.0, \"trend\": \"stable\", \"margin_pct\"\
+          : 59.0, \"category\": \"accessories\"}\n        ]\n\n    enriched = []\n\
+          \    for p in products:\n        sku = str(p.get(\"sku\"))\n        name\
+          \ = p.get(\"product_name\", \"SKU \" + sku)\n        price = float(p.get(\"\
+          list_price\", 25.0))\n        cost = float(p.get(\"unit_cost\", 10.0))\n\
+          \        uoh = float(p.get(\"units_on_hand\", 1000))\n        vel = max(float(p.get(\"\
+          weekly_velocity\", 150.0)), 0.1)\n        cover = float(p.get(\"weeks_of_cover\"\
+          , round(uoh / vel, 1)))\n        margin = float(p.get(\"margin_pct\", round((price\
+          \ - cost) / price * 100, 1)))\n        trend = p.get(\"trend\", \"stable\"\
+          )\n        category = p.get(\"category\", \"unknown\")\n\n        pr = round(cover\
+          \ / weeks_left, 2)\n        cu = max(price - cost, 0.01)\n        co = max(cost\
+          \ * 0.7, 0.01)\n        cr = round(cu / (cu + co), 3)\n        z = (cr -\
+          \ 0.5) * 2.5\n        optimal_q = round(vel * weeks_left + z * (math.sqrt(vel\
+          \ * weeks_left) * 0.8))\n\n        if pr > 1.5:\n            action = \"\
+          MARKDOWN\"\n            if pr > 3.0:\n                urgency = \"high\"\
+          \n                rec = \"Apply 40 pct clearance markdown immediately across\
+          \ remaining window\"\n                schedule = [0.25, 0.25, 0.40, 0.40,\
+          \ 0.50, 0.50][:weeks_left]\n            elif pr >= 2.0:\n              \
+          \  urgency = \"high\" if cover > 12 else \"medium\"\n                rec\
+          \ = \"Implement stepped markdown: 25 pct for 3 weeks, deepening to 30 pct\"\
+          \n                schedule = [0.15, 0.15, 0.25, 0.25, 0.30, 0.30][:weeks_left]\n\
+          \            else:\n                urgency = \"medium\"\n             \
+          \   rec = \"Introduce moderate promotional discount of 15-20 pct\"\n   \
+          \             schedule = [0.0, 0.0, 0.15, 0.15, 0.20, 0.20][:weeks_left]\n\
+          \        elif pr < 0.5 and trend in (\"rising\", \"stable\"):\n        \
+          \    action = \"REORDER\"\n            urgency = \"high\" if cover < 2 else\
+          \ \"medium\"\n            rec = \"Issue purchase order for \" + str(optimal_q)\
+          \ + \" units (Newsvendor target service level \" + str(round(cr * 100))\
+          \ + \" pct)\"\n            schedule = None\n        elif vel < 80 and trend\
+          \ == \"declining\" and margin < 55:\n            action = \"DROP\"\n   \
+          \         urgency = \"medium\"\n            rec = \"Phase out and delist\
+          \ SKU; redirect shelf space to higher-velocity substitutes\"\n         \
+          \   schedule = None\n        else:\n            action = \"HOLD\"\n    \
+          \        urgency = \"low\"\n            rec = \"Maintain current pricing\
+          \ and stock posture; sell-through is on track\"\n            schedule =\
+          \ None\n\n        enriched.append({\"sku\": sku, \"product_name\": name,\
+          \ \"category\": category, \"action\": action, \"urgency\": urgency, \"recommendation\"\
+          : rec, \"pressure_ratio\": pr, \"critical_ratio\": cr, \"optimal_order_quantity\"\
+          : optimal_q, \"markdown_schedule\": schedule, \"units_on_hand\": uoh, \"\
+          weekly_velocity\": vel, \"weeks_of_cover\": cover, \"margin_pct\": margin,\
+          \ \"list_price\": price, \"unit_cost\": cost, \"trend\": trend})\n\n   \
+          \ if decision_type == \"markdown\":\n        candidates = [x for x in enriched\
+          \ if x[\"action\"] == \"MARKDOWN\"]\n    elif decision_type == \"reorder\"\
+          :\n        candidates = [x for x in enriched if x[\"action\"] == \"REORDER\"\
+          ]\n    elif decision_type == \"drop\":\n        candidates = [x for x in\
+          \ enriched if x[\"action\"] == \"DROP\"]\n    else:\n        candidates\
+          \ = [x for x in enriched if x[\"action\"] != \"HOLD\"]\n        holds =\
+          \ [x for x in enriched if x[\"action\"] == \"HOLD\"]\n        if holds and\
+          \ len(candidates) < 5:\n            candidates.append(holds[0])\n\n    if\
+          \ not candidates:\n        candidates = enriched[:4]\n\n    return {\"candidates_json\"\
+          : json.dumps(candidates[:5]), \"extracted_json\": json.dumps(ext)}"
+        code_language: python3
+        outputs:
+          candidates_json:
+            children: null
+            type: string
+          extracted_json:
+            children: null
+            type: string
+        selected: false
+        title: Scientific Calculation
+        type: code
+        variables:
+        - value_selector:
+          - '1788468609906'
+          - text
+          value_type: string
+          variable: extractor_output
+        - value_selector:
+          - '1785431587286'
+          - result
+          value_type: array[object]
+          variable: kb_profiles_out
+      height: 53
+      id: '1785335110184'
+      position:
+        x: 2193.2392919979284
+        y: 848.5246859163707
+      positionAbsolute:
+        x: 2193.2392919979284
+        y: 848.5246859163707
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        dataset_ids:
+        - plVBhj6S5Ex2L8qOmBJKH2RQMRuMglFqhUZ4hguQQXYRKBeWBX+FHfQK5/MntFDe
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: weighted_score
+          score_threshold: 0.8
+          top_k: 10
+          weights:
+            keyword_setting:
+              keyword_weight: 0.3
+            vector_setting:
+              embedding_model_name: gemini-embedding-001
+              embedding_provider_name: langgenius/gemini/google
+              vector_weight: 0.7
+            weight_type: customized
+        query_attachment_selector: []
+        query_variable_selector:
+        - sys
+        - query
+        retrieval_mode: multiple
+        selected: false
+        title: Knowledge Retrieval
+        type: knowledge-retrieval
+      height: 91
+      id: '1785431587286'
+      position:
+        x: 1764.950140484586
+        y: 811.3964660538682
+      positionAbsolute:
+        x: 1764.950140484586
+        y: 811.3964660538682
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        classes:
+        - id: '1788461683938'
+          label: CLASS 1
+          name: UNSAFE
+        - id: '1788461685387'
+          label: CLASS 2
+          name: OFF_TOPIC
+        - id: '1788461686578'
+          label: CLASS 3
+          name: SPECIFIC
+        - id: '1790193228282'
+          label: CLASS 4
+          name: FUZZY
+        instruction: Categorize according to the output of Guard Classifier
+        model:
+          completion_params:
+            max_output_tokens: 2000
+            temperature: 0.2
+          mode: chat
+          name: claude-sonnet-4-6
+          provider: langgenius/anthropic/anthropic
+        query_variable_selector:
+        - llm
+        - text
+        selected: false
+        title: Question Classifier
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 263
+      id: '1785432020187'
+      position:
+        x: 781.2000841821667
+        y: 507.07995137447097
+      positionAbsolute:
+        x: 781.2000841821667
+        y: 507.07995137447097
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        code: "import json\n\ndef main(llm_output: str) -> dict:\n    text = llm_output.strip()\n\
+          \    if text.startswith(\"```\"):\n        text = text.split(\"```\")[1]\n\
+          \        if text.startswith(\"json\"):\n            text = text[4:]\n  \
+          \      text = text.strip()\n    try:\n        data = json.loads(text)\n\
+          \    except Exception:\n        return {\"validated_json\": json.dumps({\"\
+          understood\": {\"decision_type\": \"review\", \"product_scope\": \"all\"\
+          , \"units_on_hand\": 0, \"weeks_remaining\": 6, \"constraints\": [], \"\
+          unhandled\": []}, \"actions\": [], \"summary\": \"Analysis completed.\"\
+          , \"no_action_reason\": \"Unable to parse recommendations securely.\", \"\
+          data_as_of\": \"2026-08-28\", \"simulated_fields\": [\"units_on_hand\",\
+          \ \"unit_cost\", \"margin_pct\"]})}\n    kept = []\n    for a in data.get(\"\
+          actions\", []):\n        km = a.get(\"key_metrics\", {})\n        price\
+          \ = float(km.get(\"list_price\", 10.0))\n        cost = float(km.get(\"\
+          unit_cost\", 5.0))\n        if a.get(\"action\") == \"MARKDOWN\" and price\
+          \ <= cost:\n            continue\n        kept.append(a)\n    data[\"actions\"\
+          ] = kept\n    return {\"validated_json\": json.dumps(data)}\n"
+        code_language: python3
+        outputs:
+          validated_json:
+            children: null
+            type: string
+        selected: false
+        title: JSON for FUZZY
+        type: code
+        variables:
+        - value_selector:
+          - '1785187333497'
+          - text
+          value_type: string
+          variable: llm_output
+      height: 53
+      id: '1785438549427'
+      position:
+        x: 3018.692624959103
+        y: 838.5595740071099
+      positionAbsolute:
+        x: 3018.692624959103
+        y: 838.5595740071099
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        answer: '{"understood": {"decision_type": "refusal", "product_scope": "none",
+          "units_on_hand": 0, "weeks_remaining": 0, "constraints": [], "unhandled":
+          []}, "actions": [], "summary": "I recommend prices based strictly on your
+          internal inventory velocity, cover, and margin data. Under Article 101/102
+          TFEU and the EU Omnibus Directive (2019/2161), I cannot assist with competitor
+          price coordination, below-cost predatory pricing, or constructing artificial
+          reference prices for advertised discounts. Please state what you need for
+          your own catalog inventory.", "no_action_reason": "Query declined under
+          EU Retail Competition and Consumer Protection compliance safeguards.", "data_as_of":
+          "2026-08-28", "simulated_fields": [], "is_notice": true}'
+        selected: false
+        title: UNSAFE Answer
+        type: answer
+        variables: []
+      height: 405
+      id: '1788461887737'
+      position:
+        x: 1278.232651426159
+        y: -571.0855152326432
+      positionAbsolute:
+        x: 1278.232651426159
+        y: -571.0855152326432
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        answer: '{"understood": {"decision_type": "off_topic", "product_scope": "none",
+          "units_on_hand": 0, "weeks_remaining": 0, "constraints": [], "unhandled":
+          []}, "actions": [], "summary": "I am ShelfIQ, your retail merchandising
+          and inventory copilot. I can assist you with markdown schedules, reorder
+          sizing, assortment cannibalization, and perishables production lists. How
+          can I help with your inventory today?", "no_action_reason": "General question
+          outside retail merchandising scope.", "data_as_of": "2026-08-28", "simulated_fields":
+          [], "is_notice": true}'
+        selected: false
+        title: OFF_TOPIC Answer
+        type: answer
+        variables: []
+      height: 325
+      id: '1788461915230'
+      position:
+        x: 1305.9687803162158
+        y: -119.11246356414567
+      positionAbsolute:
+        x: 1305.9687803162158
+        y: -119.11246356414567
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params: {}
+          mode: chat
+          name: claude-sonnet-4-6
+          provider: langgenius/anthropic/anthropic
+        prompt_template:
+        - id: 00794b67-1753-49a3-94c1-e3e2c629e0bf
+          role: system
+          text: "Extract the structured retail merchandising parameters from the buyer's\
+            \ query.\n\nReturn ONLY valid JSON matching this schema:\n{\n  \"decision_type\"\
+            : \"markdown\" | \"reorder\" | \"drop\" | \"review\" | \"perishables_production\"\
+            \ | \"redistribution\",\n  \"product_scope\": string (category name, product\
+            \ name, or \"all\"),\n  \"units_on_hand\": number (0 if not specified),\n\
+            \  \"weeks_remaining\": number (0 if not specified, default 6 for markdown\
+            \ inquiries),\n  \"target_date\": string or null,\n  \"constraints\":\
+            \ array of strings (e.g. [\"max_discount_30\", \"no_below_cost\"]),\n\
+            \  \"unhandled\": array of strings (things asked for that we have no internal\
+            \ data on, e.g. \"competitor prices\", \"supplier lead time\")\n}"
+        - id: 4af8dd2b-7afd-4409-af63-4def6b4d11a2
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: Fuzzy Retrieval
+        type: llm
+        vision:
+          enabled: false
+      height: 89
+      id: '1788468609906'
+      position:
+        x: 1369.9133175981324
+        y: 764.7818859818794
+      positionAbsolute:
+        x: 1369.9133175981324
+        y: 764.7818859818794
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        code: "import json, math\n\ndef main(specific_product: list) -> dict:\n  \
+          \  weeks_left = 6  # 目前沒有額外資訊可以判斷剩餘銷售週期，先用固定值；之後如果想接使用者實際講的週數，可以再加一個輸入變數\n\
+          \n    results = []\n    for p in specific_product:\n        sku = str(p.get(\"\
+          sku\", \"\"))\n        name = p.get(\"product_name\", \"SKU \" + sku)\n\
+          \        category = p.get(\"category\", \"unknown\")\n        price = float(p.get(\"\
+          list_price\", 25.0))\n        cost = float(p.get(\"unit_cost\", 10.0))\n\
+          \        uoh = float(p.get(\"units_on_hand\", 1000))\n        vel = max(float(p.get(\"\
+          weekly_velocity\", 150.0)), 0.1)\n        cover = float(p.get(\"weeks_of_cover\"\
+          , round(uoh / vel, 1)))\n        margin = float(p.get(\"margin_pct\", round((price\
+          \ - cost) / price * 100, 1)))\n        trend = p.get(\"trend\", \"stable\"\
+          )\n\n        pr = round(cover / weeks_left, 2)\n        cu = max(price -\
+          \ cost, 0.01)\n        co = max(cost * 0.7, 0.01)\n        cr = round(cu\
+          \ / (cu + co), 3)\n        z = (cr - 0.5) * 2.5\n        optimal_q = round(vel\
+          \ * weeks_left + z * (math.sqrt(vel * weeks_left) * 0.8))\n\n        if\
+          \ pr > 1.5:\n            action = \"MARKDOWN\"\n            if pr > 3.0:\n\
+          \                urgency = \"high\"\n                rec = \"Apply 40 pct\
+          \ clearance markdown immediately across remaining window\"\n           \
+          \     schedule = [0.25, 0.25, 0.40, 0.40, 0.50, 0.50][:weeks_left]\n   \
+          \         elif pr >= 2.0:\n                urgency = \"high\" if cover >\
+          \ 12 else \"medium\"\n                rec = \"Implement stepped markdown:\
+          \ 25 pct for 3 weeks, deepening to 30 pct\"\n                schedule =\
+          \ [0.15, 0.15, 0.25, 0.25, 0.30, 0.30][:weeks_left]\n            else:\n\
+          \                urgency = \"medium\"\n                rec = \"Introduce\
+          \ moderate promotional discount of 15-20 pct\"\n                schedule\
+          \ = [0.0, 0.0, 0.15, 0.15, 0.20, 0.20][:weeks_left]\n        elif pr < 0.5\
+          \ and trend in (\"rising\", \"stable\"):\n            action = \"REORDER\"\
+          \n            urgency = \"high\" if cover < 2 else \"medium\"\n        \
+          \    rec = \"Issue purchase order for \" + str(optimal_q) + \" units (Newsvendor\
+          \ target service level \" + str(round(cr * 100)) + \" pct)\"\n         \
+          \   schedule = None\n        elif vel < 80 and trend == \"declining\" and\
+          \ margin < 55:\n            action = \"DROP\"\n            urgency = \"\
+          medium\"\n            rec = \"Phase out and delist SKU; redirect shelf space\
+          \ to higher-velocity substitutes\"\n            schedule = None\n      \
+          \  else:\n            action = \"HOLD\"\n            urgency = \"low\"\n\
+          \            rec = \"Maintain current pricing and stock posture; sell-through\
+          \ is on track\"\n            schedule = None\n\n        results.append({\n\
+          \            \"sku\": sku,\n            \"product_name\": name,\n      \
+          \      \"category\": category,\n            \"action\": action,\n      \
+          \      \"urgency\": urgency,\n            \"recommendation\": rec,\n   \
+          \         \"pressure_ratio\": pr,\n            \"critical_ratio\": cr,\n\
+          \            \"optimal_order_quantity\": optimal_q,\n            \"markdown_schedule\"\
+          : schedule,\n            \"units_on_hand\": uoh,\n            \"weekly_velocity\"\
+          : vel,\n            \"weeks_of_cover\": cover,\n            \"margin_pct\"\
+          : margin,\n            \"list_price\": price,\n            \"unit_cost\"\
+          : cost,\n            \"trend\": trend\n        })\n\n    return {\"result\"\
+          : json.dumps(results)}"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: Scientific Calculation
+        type: code
+        variables:
+        - value_selector:
+          - '1790200684405'
+          - matched_products
+          value_type: array[object]
+          variable: specific_product
+      height: 53
+      id: '1790200660391'
+      position:
+        x: 2511.393161995307
+        y: 648.2752224985416
+      positionAbsolute:
+        x: 2511.393161995307
+        y: 648.2752224985416
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        code: "import csv\nimport io\n\ndef main(csv_text: str, user_query: str) ->\
+          \ dict:\n    reader = csv.DictReader(io.StringIO(csv_text))\n    rows =\
+          \ list(reader)\n\n    query_lower = user_query.lower()\n\n    matched =\
+          \ []\n    for row in rows:\n        sku = str(row.get(\"sku\", \"\")).strip().lower()\n\
+          \        name = str(row.get(\"product_name\", \"\")).strip().lower()\n \
+          \       if sku and sku in query_lower:\n            matched.append(row)\n\
+          \        elif name and name in query_lower:\n            matched.append(row)\n\
+          \n    return {\n        \"matched_products\": matched\n    }"
+        code_language: python3
+        outputs:
+          matched_products:
+            children: null
+            type: array[object]
+        selected: false
+        title: HTTP Filtering
+        type: code
+        variables:
+        - value_selector:
+          - '1790201029771'
+          - body
+          value_type: string
+          variable: csv_text
+        - value_selector:
+          - sys
+          - query
+          value_type: string
+          variable: user_query
+      height: 53
+      id: '1790200684405'
+      position:
+        x: 1794.856517257852
+        y: 551.5896084733507
+      positionAbsolute:
+        x: 1794.856517257852
+        y: 551.5896084733507
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        answer: '{{#1790200908591.result#}}'
+        selected: false
+        title: SPECIFIC ANSWER
+        type: answer
+        variables: []
+      height: 103
+      id: '1790200764851'
+      position:
+        x: 3627.5864367201475
+        y: 439.8240282102788
+      positionAbsolute:
+        x: 3627.5864367201475
+        y: 439.8240282102788
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        code: "import json\n\ndef main(result: str, explainer_text: str) -> dict:\n\
+          \    try:\n        products = json.loads(result)\n    except Exception:\n\
+          \        products = []\n\n    output = {\n        \"status\": \"ok\" if\
+          \ products else \"error\",\n        \"products\": products,\n        \"\
+          explanation\": explainer_text.strip()\n    }\n    return {\n        \"result\"\
+          : json.dumps(output, ensure_ascii=False)\n    }"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: JSON for SPECIFIC
+        type: code
+        variables:
+        - value_selector:
+          - '1790200660391'
+          - result
+          value_type: string
+          variable: result
+        - value_selector:
+          - '1790201869042'
+          - text
+          value_type: string
+          variable: explainer_text
+      height: 53
+      id: '1790200908591'
+      position:
+        x: 3193.6701469821323
+        y: 461.43671697117617
+      positionAbsolute:
+        x: 3193.6701469821323
+        y: 461.43671697117617
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        headers: ''
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP Request
+        type: http-request
+        url: https://raw.githubusercontent.com/hytangBill/AI-BI-Nyenrode-MSc34/refs/heads/main/fast_fashion_product_profiles.csv
+        variables: []
+      height: 172
+      id: '1790201029771'
+      position:
+        x: 1340.7090007271936
+        y: 446.66263999977866
+      positionAbsolute:
+        x: 1340.7090007271936
+        y: 446.66263999977866
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: empty
+            id: ec34a17c-6d8f-4756-ab34-2fc918903129
+            value: ''
+            varType: array[object]
+            variable_selector:
+            - '1790200684405'
+            - matched_products
+          logical_operator: and
+        selected: false
+        title: IF/ELSE
+        type: if-else
+      height: 141
+      id: '1790201537221'
+      position:
+        x: 2127.2509532303125
+        y: 534.5873558542131
+      positionAbsolute:
+        x: 2127.2509532303125
+        y: 534.5873558542131
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        answer: "{\n  \"status\": \"error\",\n  \"error_type\": \"product_not_found\"\
+          ,\n  \"message\": \"We couldn't find a product matching that SKU or the\
+          \ unique product name. Please double-check the exact SKU number or full\
+          \ product name and try again.\"\n}"
+        selected: false
+        title: ERROR Answer
+        type: answer
+        variables: []
+      height: 181
+      id: '1790201576791'
+      position:
+        x: 2547.7961363215586
+        y: 305.04057622846244
+      positionAbsolute:
+        x: 2547.7961363215586
+        y: 305.04057622846244
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 10
+        model:
+          completion_params: {}
+          mode: chat
+          name: claude-sonnet-4-6
+          provider: langgenius/anthropic/anthropic
+        prompt_template:
+        - id: 6b501db6-471b-4ab8-adfe-337b8917b3b2
+          role: system
+          text: "You are ShelfIQ, the enterprise retail merchandising analyst copilot.\n\
+            You explain inventory and pricing recommendations with crisp, authoritative\n\
+            merchant reasoning, grounded strictly in the numbers you are given.\n\n\
+            You will receive a JSON array of one or more computed product records\
+            \ from\nShelfIQ's scientific calculation engine. Each record already contains\
+            \ the\nfinal action (MARKDOWN / REORDER / DROP / HOLD), urgency, and every\
+            \ metric\nbehind that decision (pressure_ratio, critical_ratio, optimal_order_quantity,\n\
+            markdown_schedule, units_on_hand, weekly_velocity, weeks_of_cover,\nmargin_pct,\
+            \ list_price, unit_cost, trend).\n\nYOUR JOB\nWrite a short, plain-language\
+            \ explanation of WHY this action was\nrecommended, for each product in\
+            \ the array. The decision has already been\nmade by the engine — you are\
+            \ explaining it, not recomputing it.\n\nRULES\n1. Every number you mention\
+            \ must be copied exactly from the record you were\n   given — never round\
+            \ it differently, never invent one that isn't there.\n2. Do not propose\
+            \ a different action, discount, or quantity than what the\n   record already\
+            \ states.\n3. Cite the relevant management-science concept briefly where\
+            \ it clarifies\n   the reasoning (e.g. \"a Newsvendor critical ratio of\
+            \ {critical_ratio}\n   implies roughly a {X} pct target service level\"\
+            , or reference\n   Gallego & van Ryzin-style markdown pacing for a markdown\
+            \ schedule).\n4. Keep the tone confident and merchant-facing — this is\
+            \ written for a\n   category manager, not a data scientist. No hedging,\
+            \ no \"it seems like\".\n5. If a record's action is HOLD, say plainly\
+            \ that no action is needed and\n   briefly say why (e.g. sell-through\
+            \ is on pace).\n\nOUTPUT\nOutput plain text only — no JSON, no markdown\
+            \ formatting, no code fences.\nIf the array has more than one product,\
+            \ write one short paragraph per\nproduct, separated by a blank line, starting\
+            \ with the product name.\n\nComputed candidates from the scientific engine:\n\
+            {{#1790200660391.result#}}"
+        selected: false
+        title: SPECIFIC EXPLAINER
+        type: llm
+        vision:
+          enabled: false
+      height: 89
+      id: '1790201869042'
+      position:
+        x: 2833.4820921892233
+        y: 461.43671697117617
+      positionAbsolute:
+        x: 2833.4820921892233
+        y: 461.43671697117617
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+      zIndex: 0
+    viewport:
+      x: 199.59815277981602
+      y: 497.9051754305749
+      zoom: 0.34867779405242605
+  rag_pipeline_variables: []
