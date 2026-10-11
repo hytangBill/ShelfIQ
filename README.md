@@ -5,250 +5,194 @@ from your catalog using management science — Newsvendor critical ratios and Ga
 markdown ladders — not from a language model's guess.
 
 ![status](https://img.shields.io/badge/status-working%20prototype-0259DD)
-![stack](https://img.shields.io/badge/stack-React%20·%20Vite%20·%20Express%20·%20Dify-444)
-![tests](https://img.shields.io/badge/automated%20tests-none%20yet-B3341C)
-![license](https://img.shields.io/badge/license-unlicensed-888)
+![backend](https://img.shields.io/badge/backend-Dify%20chatflow-0259DD)
+![app%20code](https://img.shields.io/badge/app%20code-not%20in%20this%20repo-B3341C)
+![tests](https://img.shields.io/badge/automated%20tests-none-B3341C)
+![license](https://img.shields.io/badge/license-none-888)
+
+---
+
+## What this repo currently holds
+
+> **Read this first.** This repository is at present a **specification-and-backend-export repo**,
+> not a runnable application. It contains four files:
+
+| File | What it is |
+|---|---|
+| `ShelfIQ_Dify_11102026.yml` | **The real backend.** The Dify chatflow export — classifier, retrieval, engine, narrator. Import into Dify to recreate the working app. |
+| `ShelfIQ_UI_Design_Guide_v2.md` | The UI specification: brand colour/type system, components, the Safety Stock Gauge, and the API-to-UI field mapping. |
+| `product_profiles.csv` | A 150-SKU homeware catalog. ⚠️ **The chatflow does not read this file** — see [Data sources](#data-sources). |
+| `README.md` | This file. |
+
+**The web app's source code is not here.** The React frontend and Express proxy described below
+exist in a local working copy only (9 commits on a `master` branch with no configured remote) and
+have never been pushed. Anyone cloning this repo gets the spec and the backend export — enough to
+rebuild the app in Dify, but not enough to run the web UI.
 
 ---
 
 ## Status at a glance
 
-The app **works end to end today**: you can run it locally, ask a question, and get a real answer
-rendered as action cards. It is a working prototype, not a hardened product.
-
 | Area | State | Notes |
 |---|---|---|
-| Backend logic (classifier, engine, narrator) | ✅ Built & validated | Lives in Dify, not in this repo — see [Architecture](#architecture) |
-| Express proxy (`server/`) | ✅ Working | One route + health check, 194 lines, holds the API key |
-| Frontend (`frontend/`) | ✅ Working | 14 components, React 18 + Vite + TS + Recharts |
-| Both Dify response shapes handled | ✅ Confirmed against live responses | SPECIFIC and FUZZY, plus decline notices |
-| Runs on one local URL | ✅ `http://localhost:8787` | Server serves both API and built UI |
-| Deploy config | ✅ Ready, ⬜ not deployed | `render.yaml` blueprint written; needs a GitHub remote first |
-| Pushed to GitHub | ⬜ Not yet | No `git remote` configured — 9 commits sit local-only |
-| Automated tests | ❌ None | **The biggest known gap.** See [Known gaps](#known-gaps) |
-| Auth | ⚠️ Optional shared password | HTTP Basic via `APP_PASSWORD`; off by default locally |
+| Backend logic (classifier, engine, narrator) | ✅ Built & validated | Runs in Dify; exported here as `ShelfIQ_Dify_11102026.yml` |
+| Backend export published | ✅ In this repo | 51.8 KB, importable into Dify |
+| UI specification published | ✅ In this repo | 62.0 KB |
+| Frontend source (`frontend/`) | ⬜ **Local only** | React 18 + Vite + TS + Recharts, 14 components — not pushed |
+| Express proxy (`server/`) | ⬜ **Local only** | 194 lines, one route + health check, holds the API key — not pushed |
+| Deploy config (`render.yaml`) | ⬜ **Local only** | Blueprint written, not pushed, never deployed |
+| Catalog shipped here matches the one in use | ❌ **No** | Repo has a homeware catalog; the flow fetches a fast-fashion one |
+| Automated tests | ❌ None | No test runner installed anywhere; zero test files |
+| Public deployment | ⬜ Not deployed | No live URL |
+| Auth | ⚠️ Optional shared password | `APP_PASSWORD` Basic auth in the unpublished server |
 
-**Next three things worth doing**, in order: push to GitHub → deploy on Render with
-`APP_PASSWORD` set → add the regression test suite.
+**Next three things worth doing**, in order:
+
+1. **Push the app code** (`server/`, `frontend/`, `render.yaml`, root `package.json`) so this repo is
+   runnable. Note the local branch is `master` while GitHub's default is `main`.
+2. **Resolve the catalog mismatch** — either remove `product_profiles.csv` or repoint the flow at it
+   and recalibrate the thresholds.
+3. **Add the regression test suite**, above all the narrator-number check.
 
 ---
 
 ## Architecture
 
-ShelfIQ is a **thin client around an already-built, already-tested Dify chatflow**
-(`ShelfIQ_Dify_11012026.yml`). This repo does *not* reimplement the 4-way classifier, the Newsvendor /
-markdown math, or the narrator — all of that runs inside Dify.
+ShelfIQ is a **thin client around a Dify chatflow**. The intelligence lives in Dify; the web app
+(unpublished) is just a UI and a key-holding proxy.
 
 ```
-Browser (React)  →  /api/query  →  Express proxy (server/)  →  Dify Chat Messages API
-                                         (holds the API key)
+Browser (React)  →  /api/query  →  Express proxy  →  Dify Chat Messages API
+                                   (holds the key)          │
+                                                            ▼
+                                              HTTP-fetches the catalog CSV
+                                                   from GitHub at runtime
 ```
 
-- **`server/`** — Express, one route: `POST /api/query`. Forwards the question to Dify's
-  `/chat-messages` and returns the answer. The **only** place the Dify API key lives; it never
-  reaches the browser. Also `GET /api/health`, and it serves `frontend/dist` in production.
-- **`frontend/`** — a single-page chat UI. One input box, result cards for MARKDOWN / REORDER /
-  DROP / HOLD.
+Inside the chatflow: a 4-way classifier (`UNSAFE` / `OFF_TOPIC` / `SPECIFIC` / `FUZZY`) routes to
+either an exact SKU/name lookup or a hybrid-retrieval path; both reach a deterministic Python code
+node implementing the science; a narrator LLM then writes prose **but never emits or edits a
+number**. Every numeric field traces back to that code node.
 
-Inside Dify, the pipeline is: a 4-way classifier (`UNSAFE` / `OFF_TOPIC` / `SPECIFIC` / `FUZZY`)
-routes to either an exact SKU/name lookup or a hybrid-retrieval path; both call the same
-deterministic Python engine; a narrator LLM then writes prose **but never emits or edits a
-number**. Every numeric field traces back to the engine's code node.
+> ⚠️ Because the engine lives in Dify rather than in source here, that "no LLM ever produces a
+> number" guarantee is enforced *there* and cannot be verified by reading or testing this
+> repository. A Dify-independent rebuild in Python/FastAPI was specified and deliberately deferred:
+> the course deliverable's Phase 1 needed only Dify plus a frontend, which was already the
+> validated setup, so rebuilding would have redone working logic before the deadline.
 
-> ⚠️ **Worth knowing:** because the engine lives in Dify rather than in this repo, that
-> "no LLM ever produces a number" guarantee is enforced *there* and can't be verified by reading
-> or testing this codebase alone. A Dify-independent rebuild would fix that — see below.
+### Data sources
 
-### Why not a Python/FastAPI backend?
+This is the most confusing thing about the repo as it stands, so it is worth stating plainly.
 
-[`ORIGINAL_SPEC_FASTAPI_PLAN.md`](ORIGINAL_SPEC_FASTAPI_PLAN.md) — this README's previous content —
-specified rebuilding the entire backend standalone in Python/FastAPI so the app wouldn't depend on
-Dify at all. **That plan was deliberately not used.** The course deliverable's Phase 1 needed only
-"Dify + a frontend," which was already the validated, tested setup; rebuilding would have redone
-working logic for no benefit before the deadline. The plan is kept in full for reference, as the
-basis for a post-course Dify-independent version.
+The chatflow does **not** read the CSV in this repository. It fetches its catalog over HTTP at
+runtime from a hardcoded URL in a *different* repo:
+
+```
+https://raw.githubusercontent.com/hytangBill/AI-BI-Nyenrode-MSc34/refs/heads/main/fast_fashion_product_profiles.csv
+```
+
+That URL is live (HTTP 200, 24,292 bytes) and serves a **200-SKU fast-fashion catalog** —
+categories `tops, bottoms, accessories, outerwear, dresses, knitwear, footwear, seasonal`.
+
+The `product_profiles.csv` committed here is something else entirely: a **150-SKU homeware
+catalog** — categories `decor, garden, general, kitchen, seasonal, storage`, with products like
+*REGENCY CAKESTAND 3 TIER*. Nothing reads it.
+
+Consequences, measured:
+
+- The engine's DROP thresholds (`weekly_velocity < 80`, `margin_pct < 55`) are calibrated to the
+  fast-fashion catalog's 25th percentiles — **measured 83.6 and 55.0**. ✅ Correct for the data
+  actually in use.
+- Those same thresholds are **badly miscalibrated for the homeware CSV in this repo**, whose 25th
+  percentiles are **38.1 and 35.8**. If the flow were ever repointed at it without recalibration,
+  DROP would over-fire on roughly the bottom half of the catalog instead of the bottom quarter.
+- The canonical example SKU in the spec and in older docs, `31526` (*ZIP THROUGH HOODIE BLACK*),
+  exists in the fast-fashion catalog but **not** in `product_profiles.csv`.
+
+Both catalogs share the same 16-column schema and the same four `trend` values, so the shape is
+compatible — only the contents and calibration differ.
 
 ---
 
-## Running it locally
+## Running it
 
-One-time setup:
+**From this repo alone, you cannot run the web app** — the source isn't here. What you *can* do:
 
-```bash
-cd server && npm install && cp .env.example .env
-```
+1. Import `ShelfIQ_Dify_11102026.yml` into Dify.
+2. Publish it and take the API key from **Publish → Access API**.
+3. Ask questions through Dify's own chat interface.
 
-Then edit `server/.env` and paste in your Dify API key (Dify app → Publish → Access API).
-
-```bash
-cd frontend && npm install
-```
-
-Every time you want to run it:
-
-```bash
-cd frontend && npm run build
-```
-
-```bash
-cd server && npm start
-```
-
-Open **`http://localhost:8787`** and ask something, e.g. *"How is SKU 31526 performing right now?"*
-Re-run the build after changing frontend code; the URL never changes.
-
-If `frontend/dist` is missing, the API still runs and page requests return a short note telling you
-to build first.
-
-On Windows there's also `Start ShelfIQ.bat`, plus `scripts/install-autostart.ps1` to run it at login.
-
-### Dev workflow (hot reload, two ports)
-
-```bash
-cd server && npm run dev
-```
-
-```bash
-cd frontend && npm run dev
-```
-
-Vite serves `:5173` with hot reload and proxies `/api` to the Express server on `:8787`. The
-single-port mode above is the "give me one link to open" mode.
+With the unpublished app code, the flow is: `npm install` in `server/` and `frontend/`, put the
+Dify key in `server/.env`, `npm run build` in `frontend/`, then `npm start` in `server/` — which
+serves both the API and the built UI on a single port, `http://localhost:8787`. A `render.yaml`
+blueprint deploys the same thing to Render, where `APP_PASSWORD` should be set to keep a public URL
+from spending Dify credits on your key.
 
 ---
 
-## Deploying to a public URL
+## The UI specification
 
-`localhost:8787` only works on this machine, while the server runs. The repo is already set up for
-hosting: `render.yaml` plus the root `package.json` let a host build and start everything with
-`npm run build` / `npm start`.
+`ShelfIQ_UI_Design_Guide_v2.md` is the authoritative visual spec. Its headline element is the
+**Safety Stock Gauge** — a zoned gauge showing each item's weeks of cover against its reorder
+(0.5×) and markdown (1.5×) lines.
 
-Two steps need your own accounts:
-
-**1. Push to GitHub.** There's no remote yet. Create an empty repo (no README, no `.gitignore` —
-this repo has both), then:
-
-```bash
-git remote add origin https://github.com/<you>/shelfiq.git
-```
-
-```bash
-git push -u origin master
-```
-
-**2. Deploy on Render** (free tier is enough; Railway or Fly work the same way):
-
-1. render.com → **New** → **Blueprint** → pick the repo.
-2. Render reads `render.yaml` and asks for two secrets:
-   - `DIFY_API_KEY` — the key from `server/.env`
-   - `APP_PASSWORD` — pick any password (see below)
-3. Deploy. You get a permanent URL like `https://shelfiq.onrender.com`.
-
-After that, `git push` redeploys and the URL stays the same.
-
-### Set `APP_PASSWORD` — this matters
-
-Every question costs Dify credits on **your** key. A public URL with no password is an open tap:
-anyone who finds the link can spend your quota. `APP_PASSWORD` puts the whole app behind one shared
-password (HTTP Basic — the browser asks once and remembers).
-
-It's one shared password, not user accounts, and it's only safe over HTTPS, which Render gives you
-automatically. Leave it unset locally and nothing changes.
-
-**Never commit the Dify key.** `server/.env` is git-ignored and `render.yaml` holds no secret
-values — the host prompts for them and stores them itself.
-
-### Free-tier note
-
-Render's free tier sleeps a service after ~15 minutes of no traffic, so the first request after a
-quiet spell takes ~30–60s to wake. The URL still works; it's just slow on that first hit.
-
----
-
-## The UI
-
-Built against [`ShelfIQ_UI_Design_Guide_v2.md`](ShelfIQ_UI_Design_Guide_v2.md): the brand colour and
-type system, and the **Safety Stock Gauge** — a zoned gauge showing each item's weeks of cover
-against its reorder (0.5×) and markdown (1.5×) lines.
-
-It's a **single scrolling page that shows one answer at a time**: sticky header, a hero with the
-composer and a "Try a scenario" card, an `#analysis` section, an always-present methodology
-accordion, and a pinned follow-up composer once there's an answer.
-
-Asking anything — typing in either composer, clicking a scenario row, tapping a follow-up chip —
-**replaces** `#analysis` entirely. There is no conversation thread and no history to scroll back
-to; that's a deliberate choice, not an omission. Every question goes through one `askQuestion()` in
-`App.tsx`, which is also why a scenario row submits immediately instead of just filling the input.
+The specified app is a **single scrolling page that shows one answer at a time**: sticky header, a
+hero with the composer and a "Try a scenario" card, an `#analysis` section, an always-present
+methodology accordion, and a pinned follow-up composer once an answer exists. Asking anything
+**replaces** `#analysis` entirely — there is no conversation thread and no scrollback. That is a
+deliberate choice, not an omission.
 
 Capital at risk is shown in euros. The catalog carries no currency of its own — `list_price` and
-`unit_cost` are bare numbers — so the euro is a *stated fact* about what those columns mean,
-recorded in `frontend/src/format.ts`.
-
-Components live in `frontend/src/components/`. `frontend/src/normalize.ts` parses both Dify response
-shapes and derives the gauge lines, so the gauge and the weeks-of-cover chart can't disagree.
+`unit_cost` are bare numbers — so the euro is a *stated assumption* about what those columns mean.
 
 ---
 
 ## Response shapes
 
-Both are confirmed against live responses from the deployed Dify app. Dify answers with a JSON
-**string** rather than plain chat text, in a couple of different shapes depending on the internal
-path; `normalize.ts` converts whichever arrives into one format the UI renders.
+The chatflow answers with a JSON **string** rather than plain chat text, in one of three shapes
+depending on the path taken. Any client has to normalise them.
 
 - **SPECIFIC** — `{ status, products: [...], explanation }`. Each product carries `action`,
   `urgency`, `recommendation`, `pressure_ratio`, `critical_ratio`, `optimal_order_quantity`,
   `markdown_schedule`, and the raw metrics. There is **no** per-item `reasoning` or
-  `expected_impact` on this path — the shared `explanation` is its only narrative, and the UI does
-  not fake the missing fields.
+  `expected_impact` on this path; the shared `explanation` is its only narrative.
 - **FUZZY** — `{ understood, actions: [...], summary, no_action_reason }`, each action nesting its
   metrics under `key_metrics` and carrying `reasoning` and `expected_impact`.
-- **UNSAFE / OFF_TOPIC** — the FUZZY shape with `actions: []` and `is_notice: true`; rendered as the
-  cream decline notice instead of cards.
+- **UNSAFE / OFF_TOPIC** — the FUZZY shape with `actions: []` and `is_notice: true`, intended to
+  render as a decline notice rather than cards.
 
 ---
 
 ## Known gaps
 
-Honest list of what isn't done:
-
-- **No automated tests at all.** No test runner is even installed. The original spec defined a
-  10-case regression suite — including the critical one that scans the narrator's `explanation` for
-  any number not present in `products` (the "narrator silently changed a number" bug). None of it
-  is ported. This is the single biggest risk in the project.
-- **Not deployed.** The config is ready; the deploy hasn't happened.
-- **The engine isn't in this repo**, so its guarantees aren't independently verifiable here.
-- **Exact-match only on SKU lookup** — no typo tolerance, no fuzzy string matching. A deliberate
-  v1 scope cut.
-- **FUZZY intent rests on one LLM call.** A misclassified `decision_type` surfaces the wrong subset
-  of items. Known, accepted for v1.
-- **DROP thresholds are catalog-specific** (`velocity < 80`, `margin < 55`, the 25th percentiles of
-  this catalog — measured: 83.6 and 55.0). Swapping datasets means recomputing them.
-- **Uncommitted work in progress:** `frontend/src/components/HeroComposer.tsx` has an unstaged
-  headline change (adding the design guide's italic accent, *"How much, at what price?"*).
-
----
-
-## Repo contents
-
-| Path | What it is |
-|---|---|
-| `server/` | Express proxy — one route, keeps the Dify key server-side |
-| `frontend/` | React + Vite + TypeScript single-page UI |
-| `ShelfIQ_V2.yml` | Dify chatflow export — **the real backend logic**. Import into Dify to recreate the app |
-| `fast_fashion_product_profiles.csv` | The 200-SKU catalog Dify reads from |
-| `ShelfIQ_UI_Design_Guide_v2.md` | The UI spec this frontend implements |
-| `ShelfIQ_UI_Design_Guide.md.txt` | v1: an earlier, broader concept (Track A/B). Superseded; kept for the visual system |
-| `ORIGINAL_SPEC_FASTAPI_PLAN.md` | The unused Python/FastAPI rebuild plan, kept for reference |
-| `render.yaml` | Render blueprint for one-click deploy |
-| `brand/` | Logo source and SVGs |
-| `scripts/`, `Start ShelfIQ.bat` | Windows convenience launchers |
+- **The app source is not in this repo.** The single biggest gap: the repo is not runnable as a web
+  app, and the only copy of the frontend and server is one unpushed local checkout.
+- **No automated tests anywhere.** No test runner is installed; a filesystem search finds zero test
+  files. The specified 10-case regression suite — including the critical check that scans the
+  narrator's `explanation` for any number absent from `products` — is unimplemented. For a system
+  whose core promise is "no LLM ever invents a number," this is the most serious omission.
+- **An unused, mismatched catalog is committed here**, inviting the assumption that it's the data in
+  use. See [Data sources](#data-sources).
+- **The engine is duplicated inside the chatflow.** Two separate code nodes carry the same science,
+  one per path. The spec called for a single shared implementation; the export still has both, so a
+  fix must be applied twice or they will drift.
+- **The chatflow falls back to hardcoded demo rows** when retrieval returns nothing, rather than
+  returning a not-found error. The spec explicitly called this a prototype-only convenience that
+  should not survive into production; it is still present.
+- **Fast-fashion assumptions are baked into the prompts** (example categories such as `knitwear`),
+  which would need rewriting for a different catalog.
+- **Exact-match only on SKU lookup** — no typo tolerance, no fuzzy string matching. A deliberate v1
+  scope cut.
+- **FUZZY intent rests on a single LLM call.** A misclassified `decision_type` silently surfaces the
+  wrong subset of items. Known and accepted for v1.
+- **No license file**, so nobody can legally reuse this code.
 
 ---
 
 ## The science
 
 - **Arrow, Harris & Marschak (1951)**, *Optimal Inventory Policy* — Newsvendor order quantities.
-  The optimal quantity isn't the forecast; Q\* sits at the critical ratio Cu / (Cu + Co).
+  The optimal quantity is not the forecast; Q\* sits at the critical ratio Cu / (Cu + Co).
 - **Gallego & van Ryzin (1994)**, *Optimal Dynamic Pricing of Inventories with Stochastic Demand
   over Finite Horizons* — monotone markdown ladders; prices only ever fall.
 - **Articles 101/102 TFEU** and **EU Omnibus Directive 2019/2161** — the classifier declines
